@@ -95,8 +95,8 @@ class Trademark {
                 totalSimilarity.push(avgPhonetic);
 
                 if (
-                    totalSimilarity[0] <= 2 &&
-                    totalSimilarity[1] > 0.7 &&
+                    totalSimilarity[0] <= 4 &&
+                    totalSimilarity[1] >= 0.45 &&
                     totalSimilarity[2] >= 0.25
                 ) {
                     similarTrademarks.push({
