@@ -19,6 +19,14 @@ const db = [
         name: "Coca-Cola",
         id: 20,
     },
+    {
+        name: "El Dorado",
+        id: 20,
+    },
+    {
+        name: "Day of the week",
+        id: 20,
+    },
 ];
 
 exports.db = db;
