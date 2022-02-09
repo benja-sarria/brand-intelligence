@@ -1,4 +1,4 @@
-const getPhnticAvg = (arrayWithBooleans: boolean[]) => {
+export const getPhoneticAverage = (arrayWithBooleans: boolean[]) => {
     let sum = 0;
     for (let i = 0; i < arrayWithBooleans.length; i += 1) {
         if (arrayWithBooleans[i] === true) {
@@ -9,5 +9,3 @@ const getPhnticAvg = (arrayWithBooleans: boolean[]) => {
     const avg = sum / arrayWithBooleans.length;
     return avg;
 };
-
-exports.getPhnticAvg = getPhnticAvg;

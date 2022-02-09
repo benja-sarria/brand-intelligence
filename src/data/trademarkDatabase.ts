@@ -1,4 +1,4 @@
-const db = [
+export const db = [
     {
         name: "Los tipos chiflados",
         id: 20,
@@ -25,6 +25,22 @@ const db = [
     },
     {
         name: "Day of the week",
+        id: 20,
+    },
+    {
+        name: "Wednesday",
+        id: 20,
+    },
+    {
+        name: "Adidas",
+        id: 20,
+    },
+    {
+        name: "Nike",
+        id: 20,
+    },
+    {
+        name: "Redbrown",
         id: 20,
     },
 ];

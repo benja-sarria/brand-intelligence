@@ -4,7 +4,10 @@ const path = require("path");
 
 interface Container {
     fileName: string;
+    trademarkName: string;
     finalPath: string;
+    translate: boolean;
+    trademarkTranslation: string;
 }
 
 interface savedResponse {
@@ -16,15 +19,23 @@ interface savedResponse {
 }
 
 class Container {
-    constructor(fileName: string) {
+    constructor(
+        fileName: string,
+        trademarkName: string,
+        translate: boolean,
+        trademarkTranslation: string = ""
+    ) {
         this.fileName = fileName;
+        this.trademarkName = trademarkName;
         this.finalPath = path.join(
             __dirname,
             "..",
             "data",
             "results",
-            `${this.fileName}.json`
+            `${this.fileName.replace(/\s/g, "_")}.json`
         );
+        this.translate = translate;
+        this.trademarkTranslation = trademarkTranslation;
     }
 
     async createFile() {
@@ -41,7 +52,11 @@ class Container {
             }
             fs.writeFile(
                 this.finalPath,
-                `{"consultedTrademark": "${this.fileName}", "results": []}`,
+                `{"consultedTrademark": "${this.trademarkName}",${
+                    this.translate
+                        ? `"translation": "${this.trademarkTranslation}",`
+                        : ""
+                } "results": []}`,
                 (error: any) => {
                     if (error) {
                         console.log(error.message);
@@ -169,3 +184,5 @@ class Container {
 }
 
 exports.Container = Container;
+
+export default Container;

@@ -41,27 +41,37 @@ const cosine_similarity_matrix = (matrix: any) => {
     return cosine_similarity_matrix as any;
 };
 
-const univSentEnc = async (trademarkName: string, databaseName: string) => {
+export const universalSentenceEncoder = async (
+    trademarkName: string,
+    databaseName: string,
+    translatedName: string,
+    translatedDbName: string,
+    translate: boolean
+) => {
     // Load the model.
     const currentModel: any = await use.load();
 
     // Embed an array of sentences.
-    const sentences = [trademarkName, databaseName];
-    const embeddings = await currentModel.embed(sentences);
+    const englishSentences = [trademarkName, databaseName];
+
+    const englishEmbeddings = await currentModel.embed(englishSentences);
     // `embeddings` is a 2D tensor consisting of the 512-dimensional embeddings for each sentence.
     // So in this example `embeddings` has the shape [2, 512].
 
-    // console.log(embeddings);
-
-    let current_cosine_similarity_matrix: any = await cosine_similarity_matrix(
-        embeddings.arraySync()
-    );
-
-    // console.log(cosine_similarity_matrix);
+    let current_cosine_similarity_matrix_english: any =
+        await cosine_similarity_matrix(englishEmbeddings.arraySync());
 
     console.log(databaseName);
+    if (translate) {
+        const spanishSentences = [translatedName, translatedDbName];
+        const spanishEmbeddings = await currentModel.embed(spanishSentences);
+        let current_cosine_similarity_matrix_spanish: any =
+            await cosine_similarity_matrix(spanishEmbeddings.arraySync());
+        return await (current_cosine_similarity_matrix_english[0][1] >
+        current_cosine_similarity_matrix_spanish[0][1]
+            ? current_cosine_similarity_matrix_english[0][1]
+            : current_cosine_similarity_matrix_spanish[0][1]);
+    }
 
-    return await current_cosine_similarity_matrix[0][1];
+    return current_cosine_similarity_matrix_english[0][1];
 };
-
-exports.univSentEnc = univSentEnc;
