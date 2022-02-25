@@ -1,33 +1,34 @@
 import natural, { PorterStemmerEs } from "natural";
 import { niceClasses } from "../data/niceClasses";
-const tf = require("@tensorflow/tfjs");
 
-// Define a model for linear regression.
-const model = tf.sequential();
-model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
-
-model.compile({ loss: "meanSquaredError", optimizer: "sgd" });
-
-// Generate some synthetic data for training.
-const xs = tf.tensor2d([1, 2, 3, 4], [4, 1]);
-const ys = tf.tensor2d([1, 3, 5, 7], [4, 1]);
-
-// Train the model using the data.
-model.fit(xs, ys, { epochs: 10 }).then(() => {
-    // Use the model to do inference on a data point the model hasn't seen before:
-    model.predict(tf.tensor2d([5], [1, 1])).print();
-    // Open the browser devtools to see the output
-});
+const fs = require("fs");
 
 const classifier = new natural.BayesClassifier();
 // console.log(classifier);
 // console.log(niceClasses.class1);
 
-class BayesClassification {
+interface dataModel {
+    [niceClass: string]: { class: number; terms: string[] };
+}
+{
+}
+
+export class BayesClassification {
     niceClassification: {}[] = [];
 
-    init() {
-        niceClasses.class1.terms.forEach((element) => {
+    train() {
+        const currentClasses: dataModel = niceClasses;
+        const niceKeys = Object.keys(niceClasses);
+        niceKeys.forEach((niceKey: string) => {
+            currentClasses[niceKey as keyof dataModel].terms.forEach((term) => {
+                const stemmedElement = PorterStemmerEs.stem(term);
+                classifier.addDocument(
+                    stemmedElement,
+                    `${currentClasses[niceKey as keyof dataModel].class}`
+                );
+            });
+        });
+        /*  niceClasses.class1.terms.forEach((element) => {
             const stemmedElement = PorterStemmerEs.stem(element);
             classifier.addDocument(
                 stemmedElement,
@@ -40,13 +41,55 @@ class BayesClassification {
                 stemmedElement,
                 `${niceClasses.class25.class}`
             );
-        });
+        }); */
         classifier.train();
 
-        console.log(classifier.classify("sweater"));
+        classifier.save("nbClassifier.json", (err, classifier) => {
+            console.log(classifier);
+        });
+    }
+    classify(subject: string) {
+        fs.readFile(
+            "./nbClassifier.json",
+            "utf8",
+            function (err: any, data: any) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    const parsedData = JSON.parse(data);
+                    const trainedClassifier = natural.BayesClassifier.restore(
+                        parsedData,
+                        PorterStemmerEs
+                    );
+                    const classifications: { label: string; value: number }[] =
+                        trainedClassifier.getClassifications(subject);
+                    const matchedClasses: string[] = [];
+                    classifications.forEach((niceClass) => {
+                        if (niceClass.value >= 0.00007) {
+                            matchedClasses.push(niceClass.label);
+                        }
+                    });
+                    console.log(matchedClasses);
+                    return matchedClasses;
+                }
+            }
+        );
+        /* const trainedClassifier = JSON.parse(savedClassifier);
+        natural.BayesClassifier.load(
+            "nbClassifier.json",
+            natural.PorterStemmer,
+            function (err, classifier) {
+                console.log(classifier);
+
+                return classifier.classify(subject);
+            }
+        );
+        const classifiedSubject = classifier.classify(subject);
+        console.log(classifiedSubject); */
     }
 }
 
 const classification = new BayesClassification();
 
-classification.init();
+// classification.classify("campera");
+// classification.train();
