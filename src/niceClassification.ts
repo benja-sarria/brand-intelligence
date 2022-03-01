@@ -15,25 +15,30 @@ class NiceClassification {
     }
 
     async classify(subject: string) {
-        const matchedBayes = (await this.bayesClassification.classify(subject))
-            ? await this.bayesClassification.classify(subject)
-            : [];
-        const matchedTf = await this.tfClassification.classifyProtection(
-            subject
+        const matchedClasses: number[] = [];
+        const matchedBayes = await this.bayesClassification.classify(
+            subject,
+            matchedClasses
         );
 
-        const matchedClasses = await [...matchedBayes, ...matchedTf].map(
+        const matchedTf = await this.tfClassification.classifyProtection(
+            subject,
+            matchedClasses
+        );
+
+        /* const matchedClasses = await [...matchedBayes, ...matchedTf].map(
             (niceClass) => {
                 return +niceClass;
             }
         );
-
+            
         console.log(await matchedTf);
         console.log(await matchedBayes);
-        console.log(await matchedClasses);
+        console.log(await matchedClasses); */
+        console.log(matchedClasses);
     }
 }
 
 const trial = new NiceClassification();
 
-trial.classify("Restaurante");
+trial.classify("venta de ropa");

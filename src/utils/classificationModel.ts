@@ -468,13 +468,13 @@ export class TfClassification {
         // await model.save("file://./src/utils/models/niceClassificationModel");
     }
 
-    async classifyProtection(word: string) {
+    async classifyProtection(word: string, matchedClasses: number[]) {
         const currentUse = await this.loadUse();
         const model = await tf.loadLayersModel(
             "file://./src/utils/models/niceClassificationModel/model.json"
         );
         const threshold = 0.65;
-        const matchedClasses: number[] = [];
+        // const matchedClasses: number[] = [];
         const sentences = [{ text: word }].map((t) => t.text.toLowerCase());
         const embeddings = await currentUse.embed(sentences);
         const xPredict = embeddings;
@@ -490,8 +490,9 @@ export class TfClassification {
 
             if (matchingRate > 0.65) {
                 console.log(`La Clase ${index + 1} matchea`);
-
-                matchedClasses.push(index + 1);
+                if (!matchedClasses.includes(index + 1)) {
+                    matchedClasses.push(index + 1);
+                }
             }
         });
         console.log(await matchedClasses);

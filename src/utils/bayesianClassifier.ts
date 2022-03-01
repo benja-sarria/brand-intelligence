@@ -48,11 +48,11 @@ export class BayesClassification {
             console.log(classifier);
         });
     }
-    classify(subject: string) {
+    async classify(subject: string, matchedClasses: number[]) {
         fs.readFile(
             "./nbClassifier.json",
             "utf8",
-            function (err: any, data: any) {
+            async function (err: any, data: any) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -62,14 +62,37 @@ export class BayesClassification {
                         PorterStemmerEs
                     );
                     const classifications: { label: string; value: number }[] =
-                        trainedClassifier.getClassifications(subject);
-                    const matchedClasses: string[] = [];
+                        await trainedClassifier
+                            .getClassifications(subject)
+                            .filter((niceClass) => {
+                                return niceClass.value >= 0.0007;
+                            });
+                    // const matchedClasses: string[] = [];
+
                     classifications.forEach((niceClass) => {
-                        if (niceClass.value >= 0.00007) {
-                            matchedClasses.push(niceClass.label);
+                        console.log(classifications);
+
+                        if (classifications.length <= 3) {
+                            matchedClasses.push(+niceClass.label);
+                        } else {
+                            if (matchedClasses.length === 0) {
+                                let highestToLowest = classifications.sort(
+                                    (a, b) => b.value - a.value
+                                );
+                                const filteredResult = highestToLowest.slice(
+                                    0,
+                                    2
+                                );
+                                console.log(highestToLowest);
+                                console.log(filteredResult);
+                                filteredResult.forEach((element) => {
+                                    matchedClasses.push(+element.label);
+                                });
+                            }
                         }
                     });
                     console.log(matchedClasses);
+
                     return matchedClasses;
                 }
             }
