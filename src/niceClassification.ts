@@ -1,7 +1,8 @@
 import { BayesClassification } from "./utils/bayesianClassifier";
 import { TfClassification } from "./utils/classificationModel";
+import { niceClasses } from "./data/niceClasses/index";
 
-class NiceClassification {
+export class NiceClassification {
     bayesClassification: {
         classify: Function;
     };
@@ -36,9 +37,14 @@ class NiceClassification {
         console.log(await matchedBayes);
         console.log(await matchedClasses); */
         console.log(matchedClasses);
+        if ((await matchedClasses.length) > 0) {
+            return await matchedClasses;
+        } else {
+            return niceClasses;
+        }
     }
 }
 
-const trial = new NiceClassification();
+/* const trial = new NiceClassification();
 
-trial.classify("venta de ropa");
+trial.classify("Ropa"); */
