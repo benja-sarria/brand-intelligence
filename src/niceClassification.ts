@@ -8,6 +8,7 @@ export class NiceClassification {
     };
     tfClassification: {
         classifyProtection: Function;
+        formatTextData: Function;
     };
 
     constructor() {
@@ -37,11 +38,8 @@ export class NiceClassification {
         console.log(await matchedBayes);
         console.log(await matchedClasses); */
         console.log(matchedClasses);
-        if ((await matchedClasses.length) > 0) {
-            return await matchedClasses;
-        } else {
-            return niceClasses;
-        }
+
+        return await matchedClasses;
     }
 }
 

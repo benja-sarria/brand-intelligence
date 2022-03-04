@@ -1,4 +1,5 @@
 import * as express from "express";
+import { niceClasses } from "../../data/niceClasses";
 import { allowAccess } from "../../middlewares/allowAcess";
 import { NiceClassification } from "../../niceClassification";
 
@@ -12,7 +13,11 @@ router.get("/", [allowAccess], async (req: any, res: any) => {
         const niceClass = await niceClassification.classify(
             req.query.classificationSubject.toLowerCase()
         );
+        const allTerms =
+            await niceClassification.tfClassification.formatTextData(
+                niceClasses
+            );
 
-        res.json({ niceClass: niceClass });
+        res.json({ niceClass: niceClass, wholeClassification: allTerms });
     }
 });
