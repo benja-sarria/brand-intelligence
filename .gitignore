@@ -1,7 +1,6 @@
 
 .env
 *.env
-build/
 results
 node_modules
 temp.js

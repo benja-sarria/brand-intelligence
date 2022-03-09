@@ -1,0 +1,2 @@
+export declare const universalSentenceEncoder: (trademarkName: string, databaseName: string, translatedName: string, translatedDbName: string, translate: boolean) => Promise<any>;
+//# sourceMappingURL=universalSentenceEncoder.d.ts.map

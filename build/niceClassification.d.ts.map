@@ -1,0 +1,1 @@
+{"version":3,"file":"niceClassification.d.ts","sourceRoot":"","sources":["../src/niceClassification.ts"],"names":[],"mappings":"AAIA,qBAAa,kBAAkB;IAC3B,mBAAmB,EAAE;QACjB,QAAQ,EAAE,QAAQ,CAAC;KACtB,CAAC;IACF,gBAAgB,EAAE;QACd,kBAAkB,EAAE,QAAQ,CAAC;QAC7B,cAAc,EAAE,QAAQ,CAAC;KAC5B,CAAC;;IAOI,QAAQ,CAAC,OAAO,EAAE,MAAM;CAyBjC"}

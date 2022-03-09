@@ -1,0 +1,2 @@
+export declare const similarityWithoutTranslation: (trademarkName: string, translate: boolean, next: Function) => Promise<true | "No similarities found">;
+//# sourceMappingURL=similarityWithoutTranslation.d.ts.map
