@@ -26,9 +26,12 @@ export const similarityWithoutTranslation = async (
     const tokenizedTrademark = tokenizer.tokenize(normalizedTrademark);
 
     const similarTrademarks: {}[] = [];
-    const processedTrademarks: { name: string; id: number }[] = [];
+    const processedTrademarks: { name: string; niceClass: number[] }[] = [];
     trademarkDatabase.forEach(
-        async (element: { name: string; id: number }, index: number) => {
+        async (
+            element: { name: string; niceClass: number[] },
+            index: number
+        ) => {
             const normalizedDatabaseName = element.name.toLowerCase();
             const tokenizedDatabaseName = tokenizer.tokenize(
                 normalizedDatabaseName
@@ -144,6 +147,7 @@ export const similarityWithoutTranslation = async (
                     json.results.push({
                         trademarkName: element.name,
                         criteria: totalSimilarity,
+                        niceClass: element.niceClass,
                     });
                     createdFile.save(json);
                 }
@@ -153,7 +157,7 @@ export const similarityWithoutTranslation = async (
 
             if (
                 trademarkDatabase.every(
-                    (element: { name: string; id: number }) => {
+                    (element: { name: string; niceClass: number[] }) => {
                         return processedTrademarks.includes(element);
                     }
                 )

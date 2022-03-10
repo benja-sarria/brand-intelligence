@@ -41,9 +41,12 @@ export const similarityWithTranslation = async (
         console.log(translatedTokenizedTrademark);
 
         const similarTrademarks: {}[] = [];
-        const processedTrademarks: { name: string; id: number }[] = [];
+        const processedTrademarks: { name: string; niceClass: number[] }[] = [];
         trademarkDatabase.forEach(
-            async (element: { name: string; id: number }, index: number) => {
+            async (
+                element: { name: string; niceClass: number[] },
+                index: number
+            ) => {
                 const normalizedDatabaseName = element.name.toLowerCase();
                 const translatedDbName = await translateWords(
                     normalizedDatabaseName,
@@ -379,7 +382,10 @@ export const similarityWithTranslation = async (
 
                         if (
                             trademarkDatabase.every(
-                                (element: { name: string; id: number }) => {
+                                (element: {
+                                    name: string;
+                                    niceClass: number[];
+                                }) => {
                                     return processedTrademarks.includes(
                                         element
                                     );
