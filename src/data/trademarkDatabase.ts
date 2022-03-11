@@ -16,7 +16,7 @@ export const db = [
         niceClass: [20],
     }, */
     {
-        name: "Pintecord",
+        name: "Asiduas",
         niceClass: [20],
     } /* 
     {
@@ -32,7 +32,7 @@ export const db = [
         niceClass: [20],
     }, */
     {
-        name: "Pinturama",
+        name: "Adidas",
         niceClass: [20, 25, 35],
     },
     {

@@ -72,6 +72,9 @@ export const similarityWithoutTranslation = async (
                     phoneticSimilarity.push(metaphone.compare(word, text));
                 });
             });
+
+            console.log(`Phonetic similarity: ${phoneticSimilarity}`);
+
             if (stringDistanceSimilarityDamerau.length === 0) {
                 const error = new Error();
                 error.message = "We couldn't calculate Damerau's Average";
@@ -130,17 +133,15 @@ export const similarityWithoutTranslation = async (
                 return;
             } else {
                 if (
-                    (((totalSimilarity[0] <= 4 &&
-                        totalSimilarity[1] >= 0.45 &&
-                        totalSimilarity[2] >= 0.25) ||
-                        (totalSimilarity[3] >= 0.5 &&
-                            (totalSimilarity[2] >= 0.25 ||
+                    (((totalSimilarity[0] <= 4 && totalSimilarity[1] >= 0.4) ||
+                        (totalSimilarity[3] >= 0.4 &&
+                            (totalSimilarity[2] ||
                                 (totalSimilarity[1] >= 0.4 &&
-                                    totalSimilarity[3] >= 0.6))) ||
-                        (totalSimilarity[3] >= 0.57 &&
+                                    totalSimilarity[3] >= 0.5))) ||
+                        (totalSimilarity[3] >= 0.5 &&
                             totalSimilarity[0] < 5 &&
-                            totalSimilarity[1] > 0.37)) &&
-                        totalSimilarity[1] >= 0.65) ||
+                            totalSimilarity[1] > 0.3)) &&
+                        totalSimilarity[1] >= 0.5) ||
                     totalSimilarity[1] >= 0.9 ||
                     totalSimilarity[3] >= 0.8
                 ) {
